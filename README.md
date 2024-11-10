@@ -38,6 +38,14 @@ Still to be picked.
 
 - Build a Large Language Model from Scratch
 
+### Summary 
+- use optimization from roberta for better training
+- nsp tasks don't really help in the end, stick to MSM
+- using a combination of MSM and next token prediction is an option
+- changing the attention to disetangled is an option (but i dont like it)
+- use textbooks or encyclopedia for pretraining
+- slight modifications in the transformer architecture can help, such as adding norm layers or weight skip connections
+
 ## A note on how to use Virtual Enviroments in Python
 
 This is for having a requirements.txt file with all the libraries for the project. Also so that we will be working with the same libraries and versions.
