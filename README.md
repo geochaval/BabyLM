@@ -1,4 +1,4 @@
-# BabyLLM
+# BabyLM
 
 ## Outline
 
