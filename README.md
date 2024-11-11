@@ -20,7 +20,11 @@
 
 Between 100M and 10M words. 
 
-Still to be picked.
+- WikiText-103 (More or less 100 M)
+- OpenSubtitles (To trim - but fun idea of just having movies dialogues)
+- Tatoeba (Again?)
+- Project Gutenberg (To trim)
+- The Enron Email Dataset
 
 ## Resources
 
