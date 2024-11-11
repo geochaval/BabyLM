@@ -1,5 +1,11 @@
 # BabyLM
 
+## TODO
+
+- Get the Dataset. Encyclopedia Britannica. 
+- Simulate the Baby Lama.
+
+
 ## Outline
 
 - What **problem** are we solving?
@@ -21,6 +27,9 @@
 ## Dataset 
 
 Between 100M and 10M words. 
+It's better to start with 10M words.
+
+(Remember the idea that the better the data the better the model)
 
 - WikiText-103 (More or less 100 M)
 - OpenSubtitles (To trim - but fun idea of just having movies dialogues)
@@ -39,7 +48,7 @@ Between 100M and 10M words.
     - Use textbooks - encyclopedia - questions and answers.
 - GPT or BERT: why not both?
     - You can train a model like BERT (finding masked words) and GPT (finding the next word) at the same time.
-    - (They don't use NSP anymore eheh) 
+    - (They don't use NSP anymore) 
     - This gives better results rather than doing only one of them.
     - They go into details how they did this and the architecture they used.
     - It's interesting to see the ratio (of the dataset) between masked and casual. Masked > Casual gives better results.
