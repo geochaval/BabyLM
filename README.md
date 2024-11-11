@@ -7,8 +7,10 @@
 - What **data** are we using?
     - What dataset did we choose?
     - How are we dealing with **text**?
-        - How we tokenized the text
+        - How we tokenized the text?
+            - BPE?
     - Are we doing data augmentation?
+    - How did we evaluate the quality of the data?
 - What **architecture** are we using?
     - How we changed the standard transformer
 - How are we **training** the model?
@@ -30,13 +32,28 @@ Between 100M and 10M words.
 
 ### Papers
 
+- Textbooks Are All You Need
+    - If you have good data you have a good model duh. And it doesn't have to be that big too.
+    - But you probably have to make the data yourself ^_^
+    - Use textbooks - encyclopedia - questions and answers.
 - GPT or BERT: why not both?
+    - You can train a model like BERT (finding masked words) and GPT (finding the next word) at the same time.
+    - (They don't use NSP anymore eheh) 
+    - This gives better results rather than doing only one of them.
+    - They go into details how they did this and the architecture they used.
+    - It's interesting to see the ratio (of the dataset) between masked and casual. Masked > Casual gives better results.
 - Not all layers are equally as important: Every Layer Counts BERT
 - Mean BERTs make erratic language teachers: the effectiveness of latent bootstrapping in low-resource settings
-- WARP: Word-level Adversarial ReProgramming (I guess?)
+- WARP: Word-level Adversarial ReProgramming
+- Trained on 100 million words and still in shape: BERT meets British National Corpus
 - DeBERTa: Decoding-enhanced BERT with Disentangled Attention
 - RoBERTa: A Robustly Optimized BERT Pretraining Approach
-- Textbooks Are All You Need
+- BERTs are Generative In-Context Learners
+    - Haven't read this yet. But this should say that BERT model can generate text as good as GPT-style models.
+
+Ideas: (Ignore this)
+- How do you evaluate the quality of the data? 
+    - How can you say a textbook > a comment on reddit? Mathematically speaking.
 
 ### Books
 
@@ -44,10 +61,7 @@ Between 100M and 10M words.
 
 ### Summary 
 - use optimization from roberta for better training
-- nsp tasks don't really help in the end, stick to MSM
-- using a combination of MSM and next token prediction is an option
 - changing the attention to disetangled is an option (but i dont like it)
-- use textbooks or encyclopedia for pretraining
 - slight modifications in the transformer architecture can help, such as adding norm layers or weight skip connections
 
 ## A note on how to use Virtual Enviroments in Python
