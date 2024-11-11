@@ -2,7 +2,7 @@
 
 ## TODO
 
-- Get the Dataset. Encyclopedia Britannica. ([text](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica))
+- Get the Dataset. Encyclopedia Britannica. ([url](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica))
 - Simulate the Baby Llama.
 
 
@@ -15,6 +15,7 @@
     - How are we dealing with **text**?
         - How we tokenized the text?
             - BPE?
+    - How did we create the dataset?
     - Are we doing data augmentation?
     - How did we evaluate the quality of the data?
 - What **architecture** are we using?
