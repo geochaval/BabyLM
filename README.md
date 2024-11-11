@@ -27,6 +27,7 @@ Between 100M and 10M words.
 - Tatoeba (Again?)
 - Project Gutenberg (To trim)
 - The Enron Email Dataset
+- In a paper they talk about "British National Corpus" - didn't check this yet.
 
 ## Resources
 
