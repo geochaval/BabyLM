@@ -6,7 +6,9 @@
 - Simulate the Baby Llama or LTG-BERT.
 
 ### Opinions
-I think starting from LTG-BERT paper in general is easier and has room for more testings and variations. Also getting the dataset should be easier
+
+- I think starting from LTG-BERT paper in general is easier and has room for more testings and variations. Also getting the dataset should be easier
+- I checked the code for the BNC preprocessing. If we want we can skip the spoken text
 
 ## Outline
 
