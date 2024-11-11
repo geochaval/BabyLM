@@ -2,9 +2,11 @@
 
 ## TODO
 
-- Get the Dataset. Encyclopedia Britannica. ([url](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica))
-- Simulate the Baby Llama.
+- Get the Dataset. Encyclopedia Britannica. ([url](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica)) or BNC
+- Simulate the Baby Llama or LTG-BERT.
 
+### Opinions
+I think starting from LTG-BERT paper in general is easier and has room for more testings and variations. Also getting the dataset should be easier
 
 ## Outline
 
