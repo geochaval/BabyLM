@@ -37,7 +37,7 @@ It's better to start with 10M words.
 - Tatoeba (Again?)
 - Project Gutenberg (To trim)
 - The Enron Email Dataset
-- In a paper they talk about "British National Corpus" - didn't check this yet.
+- In a paper they talk about "British National Corpus" - didn't check this yet. + LTG_BERT
 
 ## Resources
 
@@ -54,9 +54,18 @@ It's better to start with 10M words.
     - They go into details how they did this and the architecture they used.
     - It's interesting to see the ratio (of the dataset) between masked and casual. Masked > Casual gives better results.
 - Not all layers are equally as important: Every Layer Counts BERT
+    - Added weight decay in the LTG-BERT model.
+    - main idea is the layer importance
+    - quite similar perfomance with LTG-BERT
 - Mean BERTs make erratic language teachers: the effectiveness of latent bootstrapping in low-resource settings
 - WARP: Word-level Adversarial ReProgramming
 - Trained on 100 million words and still in shape: BERT meets British National Corpus
+    - Uses the BNC dataset, we can use it with their preprocessing
+    - LTG-BERT, the winner of 10M words in 2023
+    - Has different transformer architecture, with disetangled attention, more norm layers and different fully connected configuration
+    - i don't know how long it takes to train
+    - I think i prefer it from babyllama
+    - it has more room for modifications and comparisson between baseline and something more
 - DeBERTa: Decoding-enhanced BERT with Disentangled Attention
 - RoBERTa: A Robustly Optimized BERT Pretraining Approach
 - BERTs are Generative In-Context Learners
