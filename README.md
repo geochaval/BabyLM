@@ -2,8 +2,8 @@
 
 ## TODO
 
-- Get the Dataset. Encyclopedia Britannica. 
-- Simulate the Baby Lama.
+- Get the Dataset. Encyclopedia Britannica. ([text](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica))
+- Simulate the Baby Llama.
 
 
 ## Outline
