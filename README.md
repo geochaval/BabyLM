@@ -2,7 +2,7 @@
 
 ## TODO
 
-- Get the Dataset. Encyclopedia Britannica. ([url](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica)) or BNC
+- Get the Dataset. Encyclopedia Britannica. ([wiki](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica)) or BNC
 - Simulate the Baby Llama or LTG-BERT.
 
 ### Opinions
@@ -36,12 +36,18 @@ It's better to start with 10M words.
 
 (Remember the idea that the better the data the better the model)
 
+Main:
+- British Encyclopedia
+- British National Corpus
+(Both of the above don't contain information about the 21st century)
+
+
+Others:
 - WikiText-103 (More or less 100 M)
 - OpenSubtitles (To trim - but fun idea of just having movies dialogues)
 - Tatoeba (Again?)
 - Project Gutenberg (To trim)
 - The Enron Email Dataset
-- In a paper they talk about "British National Corpus" - didn't check this yet. + LTG_BERT
 
 ## Resources
 
@@ -51,6 +57,20 @@ It's better to start with 10M words.
     - If you have good data you have a good model duh. And it doesn't have to be that big too.
     - But you probably have to make the data yourself ^_^
     - Use textbooks - encyclopedia - questions and answers.
+- Trained on 100 million words and still in shape: BERT meets British National Corpus
+    - [github](https://github.com/ltgoslo/ltg-bert)
+    - LTG-BERT - the winner of 10M words in 2023
+    - BERT structure (Masked Words)
+    - Uses the BNC dataset, we can use it with their preprocessing. Everything is already made in their github.
+    - They improved the architecture quite a bit from BERT:
+        - NormFormer. (Normalization before and after).
+        - GEGLU Activation Function. Variation of GELU. Should be better than RELU.
+        - Disentangled Attention. More complicated. You treat content and position differently. 
+        - Initialization Scaling. Making the NN smaller and smaller during training (?).
+    - They tried different ways to do MLM stuff and NSP stuff.
+    - They used BPE: "... use the largest possible BPE vocabulary such that at least 95% of classes have 100 or more examples in training"
+    - Took on average 8 hours to train.
+    - There are a lot of combinations and changes you can make with this architecture.
 - GPT or BERT: why not both?
     - You can train a model like BERT (finding masked words) and GPT (finding the next word) at the same time.
     - (They don't use NSP anymore) 
@@ -61,15 +81,9 @@ It's better to start with 10M words.
     - Added weight decay in the LTG-BERT model.
     - main idea is the layer importance
     - quite similar perfomance with LTG-BERT
+- Baby Llama: knowledge distillation from an ensemble of teachers trained on a small dataset with no performance penalty
 - Mean BERTs make erratic language teachers: the effectiveness of latent bootstrapping in low-resource settings
 - WARP: Word-level Adversarial ReProgramming
-- Trained on 100 million words and still in shape: BERT meets British National Corpus
-    - Uses the BNC dataset, we can use it with their preprocessing
-    - LTG-BERT, the winner of 10M words in 2023
-    - Has different transformer architecture, with disetangled attention, more norm layers and different fully connected configuration
-    - i don't know how long it takes to train
-    - I think i prefer it from babyllama
-    - it has more room for modifications and comparisson between baseline and something more
 - DeBERTa: Decoding-enhanced BERT with Disentangled Attention
 - RoBERTa: A Robustly Optimized BERT Pretraining Approach
 - BERTs are Generative In-Context Learners
