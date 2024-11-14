@@ -78,16 +78,25 @@ Others:
     - They go into details how they did this and the architecture they used.
     - It's interesting to see the ratio (of the dataset) between masked and casual. Masked > Casual gives better results.
 - Not all layers are equally as important: Every Layer Counts BERT
-    - Added weight decay in the LTG-BERT model.
-    - main idea is the layer importance
-    - quite similar perfomance with LTG-BERT
+    - [github](https://github.com/ltgoslo/elc-bert)
+    - ELC Bert - Winners of BabyLM 2023
+    - Based on the LTG-BERT model.
+    - Instead of having residual connections each layer decides which layer to consider.
+    - Main idea is the layer importance/weighting.
+    - Similar perfomance with LTG-BERT
 - Baby Llama: knowledge distillation from an ensemble of teachers trained on a small dataset with no performance penalty
 - Mean BERTs make erratic language teachers: the effectiveness of latent bootstrapping in low-resource settings
 - WARP: Word-level Adversarial ReProgramming
-- DeBERTa: Decoding-enhanced BERT with Disentangled Attention
 - RoBERTa: A Robustly Optimized BERT Pretraining Approach
+- BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
 - BERTs are Generative In-Context Learners
     - Haven't read this yet. But this should say that BERT model can generate text as good as GPT-style models.
+- DeBERTa: Decoding-enhanced BERT with Disentangled Attention
+- DeBERTaV3: Improving DeBERTa using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing
+- Should You Mask 15% in Masked Language Modeling?
+    - Should be interesting
+
+
 
 Ideas: (Ignore this)
 - How do you evaluate the quality of the data? 
