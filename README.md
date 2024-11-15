@@ -23,6 +23,9 @@
 
 ## Files
 
+Some notes:
+- Makes more sense to clean up the data and then split it.
+
 Getting the Dataset:
 - [`convert_bnc.py`](preprocessing/convert_bnc.py): converts the BNC dataset from XML to MD. Tbh I don't wanna touch this file.
 - [`splitter.py`](preprocessing/splitter.py): takes the MD and creates a 10 M words txt file.
