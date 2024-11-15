@@ -23,9 +23,12 @@
 
 ## Files
 
+Getting the Dataset:
 - [`convert_bnc.py`](preprocessing/convert_bnc.py): converts the BNC dataset from XML to MD. Tbh I don't wanna touch this file.
 - [`splitter.py`](preprocessing/splitter.py): takes the MD and creates a 10 M words txt file.
 - [`first-names.txt`](preprocessing/first-names.txt): A file with random names. It's used in the spoken section of the BNC.
+Processing the text:
+
 
 ## Dataset 
 
