@@ -28,6 +28,7 @@ Getting the Dataset:
 - [`splitter.py`](preprocessing/splitter.py): takes the MD and creates a 10 M words txt file.
 - [`first-names.txt`](preprocessing/first-names.txt): A file with random names. It's used in the spoken section of the BNC.
 Processing the text:
+- [`cleanup.py`](preprocessing/cleanup.py): Some regex rules to clean up the text. Removing extra white spaces, random characters ecc...
 
 
 ## Dataset 
