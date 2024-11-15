@@ -8,7 +8,7 @@ from sacremoses import MosesPunctNormalizer
 
 
 SOURCE_FOLDER = "../Texts"
-TARGET_FOLDER = "./pretrain/bnc"
+TARGET_FOLDER = "../datasets/bnc"
 
 os.system(f"mkdir {TARGET_FOLDER}")
 
