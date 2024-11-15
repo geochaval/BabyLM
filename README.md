@@ -1,53 +1,40 @@
 # BabyLM
 
-## TODO
-
-- Get the Dataset. Encyclopedia Britannica. ([wiki](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica)) or BNC
-- Simulate the Baby Llama or LTG-BERT.
-
-### Opinions
-
-- I think starting from LTG-BERT paper in general is easier and has room for more testings and variations. Also getting the dataset should be easier
-- I checked the code for the BNC preprocessing. If we want we can skip the spoken text
-
-## Outline
-
 - What **problem** are we solving?
     - Why is it important?
 - What **data** are we using?
     - What dataset did we choose?
+        - BNC
     - How are we dealing with **text**?
         - How we tokenized the text?
-            - BPE?
+            - BPE
     - How did we create the dataset?
+        - spitter
     - Are we doing data augmentation?
+        - Probably not
     - How did we evaluate the quality of the data?
 - What **architecture** are we using?
-    - How we changed the standard transformer
+    - BabyLlama
+    - LTG - Bert
 - How are we **training** the model?
     - How are we **pre-training** it?
     - How are **fine-tuning** it?
 - How are we **evaluating** it?
 
+## Files
+
+- [`convert_bnc.py`](preprocessing/convert_bnc.py): converts the BNC dataset from XML to MD. Tbh I don't wanna touch this file.
+- [`splitter.py`](preprocessing/splitter.py): takes the MD and creates a 10 M words txt file.
+
 ## Dataset 
 
-Between 100M and 10M words. 
-It's better to start with 10M words.
-
-(Remember the idea that the better the data the better the model)
+(The better the data the better the model)
+Between 100M and 10M words. It's better to start with 10M words.
 
 Main:
-- British Encyclopedia
+- British Encyclopedia ([wiki](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica))
 - British National Corpus
 (Both of the above don't contain information about the 21st century)
-
-
-Others:
-- WikiText-103 (More or less 100 M)
-- OpenSubtitles (To trim - but fun idea of just having movies dialogues)
-- Tatoeba (Again?)
-- Project Gutenberg (To trim)
-- The Enron Email Dataset
 
 ## Resources
 
@@ -95,21 +82,6 @@ Others:
 - DeBERTaV3: Improving DeBERTa using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing
 - Should You Mask 15% in Masked Language Modeling?
     - Should be interesting
-
-
-
-Ideas: (Ignore this)
-- How do you evaluate the quality of the data? 
-    - How can you say a textbook > a comment on reddit? Mathematically speaking.
-
-### Books
-
-- Build a Large Language Model from Scratch
-
-### Summary 
-- use optimization from roberta for better training
-- changing the attention to disetangled is an option (but i dont like it)
-- slight modifications in the transformer architecture can help, such as adding norm layers or weight skip connections
 
 ## A note on how to use Virtual Enviroments in Python
 
