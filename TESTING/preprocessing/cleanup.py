@@ -1,69 +1,49 @@
 import os
-import regex as re
+import pathlib
 from pathlib import Path
 
-# File paths
-INPUT_TRAIN = '../datasets/train.txt'
-INPUT_VALID = '../datasets/validation.txt'
-
-OUTPUT_TRAIN = '../pretrain/train_cleaned.txt'
-OUTPUT_VALID = '../pretrain/validation_cleaned.txt'
-
-# Compile regex patterns once
-PATTERNS = {
-    'nonstandard_chars': re.compile(r'[^a-zA-Z0-9\s.,!?\'":-]'),
-    'multiple_spaces': re.compile(r'\s+'),
-    'multiple_periods': re.compile(r'\.{3,}'),
-    'multiple_puncts': re.compile(r'([!?])\1+'),
-    'space_before_punct': re.compile(r'\s+([.,!?])')
-}
-
-def clean_text(text):
-    """Clean and normalize text."""
-    # Remove non-standard characters
-    text = PATTERNS['nonstandard_chars'].sub('', text)
+def combine_md_files():
+    # Get the current file's directory (preprocessing folder)
+    current_dir = Path(__file__).parent
     
-    # Normalize punctuation and spaces
-    text = PATTERNS['multiple_spaces'].sub(' ', text)
-    text = PATTERNS['multiple_periods'].sub('...', text)
-    text = PATTERNS['multiple_puncts'].sub(r'\1', text)
-    text = PATTERNS['space_before_punct'].sub(r'\1', text)
+    # Navigate to the directories
+    datasets_dir = current_dir.parent / 'datasets'
+    bnc_dir = datasets_dir / 'bnc'
     
-    # Add space after punctuation if missing
-    for punct in '.,!?':
-        text = text.replace(f'{punct}', f'{punct} ')
+    # Create output file path in the datasets directory
+    output_file = datasets_dir / 'full_train.txt'
     
-    # Final cleanup of any double spaces
-    text = PATTERNS['multiple_spaces'].sub(' ', text)
-    return text.strip()
-
-def process_file(input_file, output_file):
-    """Process a single file."""
-    # Create output directory if needed
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    # Check if bnc directory exists
+    if not bnc_dir.exists():
+        raise FileNotFoundError(f"BNC directory not found at {bnc_dir}")
     
-    # Read and clean text
-    with open(input_file, 'r', encoding='utf-8') as infile:
-        text = infile.read()
+    # Initialize counter for processed files
+    processed_files = 0
     
-    cleaned_text = clean_text(text)
-    
-    # Write cleaned text
+    # Open the output file in write mode
     with open(output_file, 'w', encoding='utf-8') as outfile:
-        outfile.write(cleaned_text)
+        # Recursively iterate through all subdirectories
+        for md_file in bnc_dir.rglob('*.md'):
+            try:
+                # Read content from each MD file
+                with open(md_file, 'r', encoding='utf-8') as infile:
+                    content = infile.read()
+                    
+                # Write content to output file with just a newline separator
+                outfile.write(content)
+                outfile.write('\n')
+                
+                processed_files += 1
+                
+            except Exception as e:
+                print(f"Error processing {md_file}: {str(e)}")
     
-    return len(text), len(cleaned_text)
-
-def main():
-    # Process training file
-    print("\nCleaning training file...")
-    orig_size, clean_size = process_file(INPUT_TRAIN, OUTPUT_TRAIN)
-    print(f"Training file: {clean_size:,} chars (reduced from {orig_size:,})")
-    
-    # Process validation file
-    print("\nCleaning validation file...")
-    orig_size, clean_size = process_file(INPUT_VALID, OUTPUT_VALID)
-    print(f"Validation file: {clean_size:,} chars (reduced from {orig_size:,})")
+    print(f"Processing complete! Combined {processed_files} files into {output_file}")
+    return processed_files
 
 if __name__ == "__main__":
-    main()
+    try:
+        num_files = combine_md_files()
+        print(f"Successfully processed {num_files} files.")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
