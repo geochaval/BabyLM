@@ -7,8 +7,8 @@ import xml.etree.ElementTree as ET
 from sacremoses import MosesPunctNormalizer
 
 
-SOURCE_FOLDER = "../Texts"
-TARGET_FOLDER = "../datasets/bnc"
+SOURCE_FOLDER = "../datasets/bnc_xml/Texts"
+TARGET_FOLDER = "../datasets/bnc_md/"
 
 os.system(f"mkdir {TARGET_FOLDER}")
 

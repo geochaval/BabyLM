@@ -8,14 +8,14 @@ def combine_md_files():
     
     # Navigate to the directories
     datasets_dir = current_dir.parent / 'datasets'
-    bnc_dir = datasets_dir / 'bnc'
+    bmc_dir = datasets_dir / 'bnc_md'
     
     # Create output file path in the datasets directory
-    output_file = datasets_dir / 'full_train.txt'
+    output_file = datasets_dir / 'full_text.txt'
     
-    # Check if bnc directory exists
-    if not bnc_dir.exists():
-        raise FileNotFoundError(f"BNC directory not found at {bnc_dir}")
+    # Check if bmc_md directory exists
+    if not bmc_dir.exists():
+        raise FileNotFoundError(f"BMC_MD directory not found at {bmc_dir}")
     
     # Initialize counter for processed files
     processed_files = 0
@@ -23,7 +23,7 @@ def combine_md_files():
     # Open the output file in write mode
     with open(output_file, 'w', encoding='utf-8') as outfile:
         # Recursively iterate through all subdirectories
-        for md_file in bnc_dir.rglob('*.md'):
+        for md_file in bmc_dir.rglob('*.md'):
             try:
                 # Read content from each MD file
                 with open(md_file, 'r', encoding='utf-8') as infile:
