@@ -15,7 +15,7 @@ tokenizer.normalizer = NFKC()
 
 trainer = trainers.BpeTrainer(
     vocab_size= 2**13,
-    special_tokens=["<PAD>", "<UNK>", "<s>", "</s>"],
+    special_tokens=["<PAD>", "<UNK>", "<BOS>", "<EOS>", "<MASK>"],
 )
 print("Training the tokenizer", flush=True)
 tokenizer.train([train_file], trainer)
