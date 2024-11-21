@@ -38,8 +38,8 @@ tokenizer.pad_token = "<pad>"
 
 # in the original code I had random_chunk = False
 # random_chunk=True is expected to improve the model performance a bit
-train_dataset = BabylmDataset(config['data']['train_path'], SEQ_LENGTH, tokenizer=tokenizer, random_chunk=True)
-full_eval_dataset = BabylmDataset(config['data']['eval_path'], SEQ_LENGTH, tokenizer=tokenizer, offset=0)
+train_dataset = CustomDataset(config['data']['train_path'], SEQ_LENGTH, tokenizer=tokenizer, random_chunk=True)
+full_eval_dataset = CustomDataset(config['data']['eval_path'], SEQ_LENGTH, tokenizer=tokenizer, offset=0)
 
 seed(2023) # we fix the same subset for all models
 eval_indices = sample(range(len(full_eval_dataset)), config['data']['eval_samples'])
