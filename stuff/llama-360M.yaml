@@ -1,7 +1,7 @@
 data:
   tokenizer_path: "./models/tokenizer-clean.json"
-  train_path: "./cosrpus_split/train"
-  eval_path: "./corpus_split/val"
+  train_path: "./corpus_split/train.txt"
+  eval_path: "./corpus_split/val.txt"
   seq_length: 128
   eval_samples: 8192
 
