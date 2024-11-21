@@ -1,4 +1,4 @@
-import re
+import regex as re
 import unicodedata
 from pathlib import Path
 from typing import Dict, Union, Callable
@@ -8,6 +8,9 @@ from tqdm import tqdm
 PATTERNS: Dict[str, tuple[str, Union[str, Callable]]] = {
     # Convert words with 2+ uppercase letters to title case (e.g., "ABC" → "Abc")
     'uppercase_words': (r'\b[A-Z]{2,}\b', lambda m: m.group(0).title()),
+
+    # Remove all special characters
+    'special_chars': (r'[^\p{L}\p{N}\p{Z}\p{P}\p{S}\n]', ''),
     
     # Remove zero-width spaces and other invisible Unicode characters
     'invisible_chars': (r'[\u200B-\u200D\uFEFF]', ''),

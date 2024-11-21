@@ -67,7 +67,7 @@ def main():
             print("Please enter valid numbers")
     
     # Create datasets
-    # random.seed(42)
+    random.seed(42)
     print("\nCreating training set...")
     train_articles, actual_train_words = create_dataset(articles, train_words, "Creating training set")
     remaining_articles = [a for a in articles if a not in train_articles]
