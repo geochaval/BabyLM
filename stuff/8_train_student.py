@@ -1,6 +1,6 @@
 from transformers import (
     GPT2TokenizerFast, LlamaForCausalLM,
-    LlamaConfig, GPT2LMHeadModel,
+    LlamaConfig, GPTJForCausalLM,
     Trainer, TrainingArguments,
     DataCollatorForLanguageModeling
 )
@@ -26,7 +26,7 @@ ALPHA = 0.5
 PATH = Path("./")
 
 teacher_dir1 = PATH / 'models/Llama-360M'
-teacher_dir2 = PATH / 'models/gpt-705M'
+teacher_dir2 = PATH / 'models/GPTJ-705M'
 
 MODEL_NAME = f'Baby-Llama-58M'
 MODEL_OUTPUT = Path('./models') / MODEL_NAME
@@ -78,7 +78,7 @@ student = LlamaForCausalLM(config)
 
 
 teacher1 = LlamaForCausalLM.from_pretrained(teacher_dir1)
-teacher2 = GPT2LMHeadModel.from_pretrained(teacher_dir2)
+teacher2 = GPTJForCausalLM.from_pretrained(teacher_dir2)
 teachers = [teacher1, teacher2]
 
 
@@ -114,7 +114,7 @@ class DistillationTrainer(Trainer):
             self._move_model_to_device(teacher, self.model.device)
             teacher.eval()
 
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
         # compute student output
         outputs_student = model(**inputs)
         student_loss = outputs_student.loss
@@ -150,10 +150,10 @@ training_args = DistillationTrainingArguments(
     save_strategy = "epoch",
     evaluation_strategy = "epoch",
     num_train_epochs=6,
+    report_to=[],
     gradient_accumulation_steps=1,
     per_device_train_batch_size=BATCH_SIZE,
     save_total_limit=1,  # Set to zero to avoid saving
-    report_to="wandb",
     warmup_steps=200, 
     lr_scheduler_type="cosine",
     learning_rate=LR,

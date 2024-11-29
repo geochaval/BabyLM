@@ -17,8 +17,8 @@ class CustomDataset(Dataset):
         cache_dir = Path("cache")
         cache_dir.mkdir(exist_ok=True)
         tokenized_file = cache_dir / f"tokenized_{data_name}_{tokenizer_name}_{tokenizer.vocab_size}.pt"
-        
-        if tokenized_file.exists():
+        chck = False
+        if chck:
             print(f"Loading cached data from {tokenized_file}")
             self.data = torch.load(tokenized_file)
         else:
@@ -28,8 +28,7 @@ class CustomDataset(Dataset):
             print(f"Encoded length: {len(encoded)}")
             self.data = torch.tensor(encoded)
             # Save tokenized data
-            print(f"Saving tokenized data to {tokenized_file}")
-            torch.save(self.data, tokenized_file)
+            
     
     def __len__(self):
         if self.random_chunk:
