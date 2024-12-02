@@ -6,48 +6,32 @@ from tqdm import tqdm
 
 # Define cleaning patterns
 PATTERNS: Dict[str, tuple[str, Union[str, Callable]]] = {
-    # Convert words with 2+ uppercase letters to title case (e.g., "ABC" → "Abc")
-    'uppercase_words': (r'\b[A-Z]{2,}\b', lambda m: m.group(0).title()),
-
-    # Remove all special characters
+    # Convert words with 2+ uppercase letters to title case
+    'uppercase_words': (r'\b\p{Lu}{2,}\b', lambda m: m.group(0).title()),
+    
+    # Remove problematic Unicode characters
     'special_chars': (r'[^\p{L}\p{N}\p{Z}\p{P}\p{S}\n]', ''),
     
-    # Remove zero-width spaces and other invisible Unicode characters
-    'invisible_chars': (r'[\u200B-\u200D\uFEFF]', ''),
+    # Standardize whitespace and remove invisible characters
+    'whitespace_cleanup': (r'[\u200B-\u200F\uFEFF\p{Z}]', ' '),
     
-    # Standardize various types of quotation marks to straight double quotes
+    # Standardize quotes and apostrophes
     'quotes': (r'[""''‹›«»]', '"'),
-    
-    # Standardize various types of apostrophes to straight single quote
     'apostrophes': (r'[`′´'']', "'"),
     
-    # Remove parenthetical references containing "q.v." or "cf."
-    # e.g., "(q.v. something)" or "(cf. something)" → ""
+    # Remove parenthetical references
     'references': (r'\([^)]*(?:q\.v\.|cf\.)[^)]*\)', ''),
     
-    # Standardize various types of dashes to simple hyphen
+    # Standardize dashes
     'dashes': (r'[‒–—―]', '-'),
     
-    # Remove spaces before punctuation marks and closing parenthesis
-    # e.g., "word ," → "word,", "word )" → "word)"
+    # Fix spacing around punctuation
     'space_before_punct': (r'\s*([,.!?:;)])', r'\1'),
-    
-    # Remove spaces after opening parenthesis and before closing parenthesis
-    # e.g., "( word )" → "(word)"
     'paren_spaces': (r'(\()\s*|\s*(\))', r'\1\2'),
     
-    # Replace multiple spaces with single space (preserving newlines)
-    'whitespace': (r'[^\S\n]+', ' '),
-    
-    # Remove spaces at the start and end of each line
-    'line_edges': (r'^ +| +$', ''),
-    
-    # Replace three or more consecutive newlines with just two
-    'multiple_newlines': (r'\n{3,}', '\n\n'),
-    
-    # Replace multiple spaces with a single space
-    # This is a final cleanup step after other replacements
-    'extra_spaces': (r' +', ' ')
+    # Clean up whitespace
+    'whitespace': (r'^ +| +$|[^\S\n]+', ' '),
+    'multiple_newlines': (r'\n{3,}', '\n\n')
 }
 
 # Compile patterns once at module level
