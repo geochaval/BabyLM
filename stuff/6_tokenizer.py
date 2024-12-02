@@ -1,108 +1,53 @@
 from pathlib import Path
-from tokenizers import (
-    Tokenizer, 
-    decoders, 
-    models, 
-    pre_tokenizers,
-    processors, 
-    trainers
-)
+from tokenizers import (Tokenizer, decoders, models, pre_tokenizers,
+                       processors, trainers)
 from tokenizers.normalizers import NFKC
-from collections import Counter
-import json
 
-def create_byte_level_bpe_tokenizer(vocab_size: int, min_frequency: int = 2):
-    """Create a byte-level BPE tokenizer with specified configuration"""
+def train_tokenizer():
+    # Define paths
+    corpus_path = Path("corpus_split/train.txt")
+    output_dir = Path("models")
+    output_dir.mkdir(exist_ok=True)
+
+    # Initialize tokenizer with BPE (Byte-Pair Encoding) model
+    # BPE is great for handling subword units and works well with most languages
     tokenizer = Tokenizer(models.BPE())
-    
-    # Set up tokenizer components
+
+    # Set up the tokenizer components
+    # ByteLevel components work well with UTF-8 text and handle spaces intelligently
     tokenizer.pre_tokenizer = pre_tokenizers.ByteLevel(add_prefix_space=True)
     tokenizer.decoder = decoders.ByteLevel()
     tokenizer.post_processor = processors.ByteLevel(trim_offsets=True)
+    
+    # NFKC normalization ensures consistent handling of unicode characters
     tokenizer.normalizer = NFKC()
-    
-    # Configure trainer with special tokens
+
+    # Set up the trainer
+    # We include <pad> as a special token even though it's not in your corpus
+    # because it's often needed during model training for handling batches
     trainer = trainers.BpeTrainer(
-        vocab_size=vocab_size,
-        min_frequency=min_frequency,
-        special_tokens=["<pad>", "<s>", "</s>"],
-        show_progress=True
+        vocab_size=16000,          # Total size of vocabulary
+        min_frequency=2,           # Token must appear at least twice to be included
+        special_tokens=["<pad>", "<s>", "</s>"]  # Special tokens the model should know about
     )
-    
-    return tokenizer, trainer
 
-def analyze_token_distribution(tokenizer, file_path: str):
-    """Analyze token distribution in the dataset"""
-    token_counts = Counter()
-    print("Analyzing token distribution...")
-    
-    with open(file_path, 'r', encoding='utf-8') as f:
-        text = f.read()
-        encoded = tokenizer.encode(text)
-        token_counts.update(encoded.ids)
-    
-    # Calculate statistics
-    total_tokens = sum(token_counts.values())
-    unique_tokens = len(token_counts)
-    tokens_with_100_or_more = sum(1 for count in token_counts.values() if count >= 100)
-    percentage = (tokens_with_100_or_more / unique_tokens) * 100
-    
-    return {
-        'total_tokens': total_tokens,
-        'unique_tokens': unique_tokens,
-        'tokens_with_100_or_more': tokens_with_100_or_more,
-        'percentage': percentage
-    }
+    # Train the tokenizer on your corpus
+    print("Training tokenizer...")
+    tokenizer.train([str(corpus_path)], trainer)
 
-def test_tokenizer(tokenizer, text=None):
-    """Test the tokenizer on a sample text"""
-    if text is None:
-        text = "The quick brown fox jumps over the lazy dog."
-    
-    encoded = tokenizer.encode(text)
-    
-    print("\n=== Tokenizer Test ===")
-    print(f"Original text: {text}")
-    print(f"Encoded String: {encoded.tokens}")
-    print(f"Encoded IDs: {encoded.ids}")
-    print(f"Decoded String: {tokenizer.decode(encoded.ids)}")
-
-def main():
-    # Setup paths
-    data_dir = Path("corpus_split")
-    output_dir = Path("models")
-    output_dir.mkdir(exist_ok=True)
-    
-    # Get training files
-    train_path = data_dir / "train.txt"
-    assert train_path.exists(), "Training file not found"
-    
-    # Set tokenizer parameters
-    VOCAB_SIZE = 16000
-    MIN_FREQUENCY = 2
-    
-    # Create and train tokenizer
-    print(f"Training tokenizer with vocabulary size {VOCAB_SIZE}...")
-    tokenizer, trainer = create_byte_level_bpe_tokenizer(VOCAB_SIZE, MIN_FREQUENCY)
-    tokenizer.train([str(train_path)], trainer)
-    
-    # Analyze distribution
-    stats = analyze_token_distribution(tokenizer, str(train_path))
-    
-    # Print statistics
-    print("\n=== Vocabulary Statistics ===")
-    print(f"Total tokens in corpus: {stats['total_tokens']:,}")
-    print(f"Unique tokens (vocabulary size): {stats['unique_tokens']:,}")
-    print(f"Tokens with ≥100 examples: {stats['tokens_with_100_or_more']:,}")
-    print(f"Percentage of tokens with ≥100 examples: {stats['percentage']:.2f}%")
-    
-    # Test tokenizer
-    test_tokenizer(tokenizer)
-    
-    # Save tokenizer
+    # Save the trained tokenizer
     tokenizer_path = output_dir / "tokenizer-clean.json"
     tokenizer.save(str(tokenizer_path), pretty=True)
-    print(f"\nTokenizer saved to {tokenizer_path}")
+    print(f"Tokenizer saved to {tokenizer_path}")
+
+    # Let's test the tokenizer to make sure it works correctly
+    print("\nTesting tokenizer with a sample from the corpus:")
+    # Read first 100 characters of your corpus for testing
+    sample_text = corpus_path.read_text()[:100]
+    encoded = tokenizer.encode(sample_text)
+    print(f"Sample encoded tokens: {encoded.tokens[:10]}...")  # Show first 10 tokens
+    decoded = tokenizer.decode(encoded.ids)
+    print(f"Decoded correctly? {sample_text[:50]} == {decoded[:50]}")
 
 if __name__ == "__main__":
-    main()
+    train_tokenizer()
