@@ -10,11 +10,9 @@ def train_tokenizer():
     output_dir.mkdir(exist_ok=True)
 
     # Initialize tokenizer with BPE (Byte-Pair Encoding) model
-    # BPE is great for handling subword units and works well with most languages
     tokenizer = Tokenizer(models.BPE())
 
     # Set up the tokenizer components
-    # ByteLevel components work well with UTF-8 text and handle spaces intelligently
     tokenizer.pre_tokenizer = pre_tokenizers.ByteLevel(add_prefix_space=True)
     tokenizer.decoder = decoders.ByteLevel()
     tokenizer.post_processor = processors.ByteLevel(trim_offsets=True)
@@ -23,15 +21,14 @@ def train_tokenizer():
     tokenizer.normalizer = NFKC()
 
     # Set up the trainer
-    # We include <pad> as a special token even though it's not in your corpus
-    # because it's often needed during model training for handling batches
+    # We include <pad> as a special token even though it's not in the corpus
     trainer = trainers.BpeTrainer(
         vocab_size=16000,          # Total size of vocabulary
         min_frequency=2,           # Token must appear at least twice to be included
         special_tokens=["<pad>", "<s>", "</s>"]  # Special tokens the model should know about
     )
 
-    # Train the tokenizer on your corpus
+    # Train the tokenizer on the corpus
     print("Training tokenizer...")
     tokenizer.train([str(corpus_path)], trainer)
 
