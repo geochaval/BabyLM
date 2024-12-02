@@ -1,48 +1,53 @@
 # BabyLM
 
-- What **problem** are we solving?
-    - Why is it important?
-- What **data** are we using?
-    - What dataset did we choose?
-        - BNC
-    - How are we dealing with **text**?
-        - How we tokenized the text?
-            - BPE
-    - How did we create the dataset?
-        - spitter
-    - Are we doing data augmentation?
-        - Probably not
-    - How did we evaluate the quality of the data?
-- What **architecture** are we using?
-    - BabyLlama
-    - LTG - Bert
-- How are we **training** the model?
-    - How are we **pre-training** it?
-    - How are **fine-tuning** it?
-- How are we **evaluating** it?
-
 ## Files
 
-Some notes:
-- Makes more sense to clean up the data and then split it.
+- 1x: Web scraper: Downloads 1911 Encyclopedia Britannica from Wikisource → JSON files with {url, title, content, timestamp}
+- 2x: JSON converter: JSON files → clean text files (content only)
+- 3x: Text combiner: Individual text files → single encyclopedia file with articles separated by newlines
+- 4x: Text cleaner: Raw encyclopedia text → standardized text with consistent formatting
+- 5x: Dataset splitter: Clean text → training/validation sets in 'corpus_split' with LLM tokens
+- 6x: Tokenizer trainer: Training text → BPE tokenizer (16K vocab) saved as JSON in 'models'
+- 7x: Model trainer: Training data + tokenizer → trained language model (config via YAML)
+- 8x: Knowledge distiller: Two large models (360M, 705M params) → smaller model (58M params)
 
-Getting the Dataset:
-- [`convert_bnc.py`](preprocessing/convert_bnc.py): converts the BNC dataset from XML to MD. Tbh I don't wanna touch this file.
-- [`splitter.py`](preprocessing/splitter.py): takes the MD and creates a 10 M words txt file.
-- [`first-names.txt`](preprocessing/first-names.txt): A file with random names. It's used in the spoken section of the BNC.
-Processing the text:
-- [`cleanup.py`](preprocessing/cleanup.py): Some regex rules to clean up the text. Removing extra white spaces, random characters ecc...
+
+```
+project/
+├── data/
+│   ├── britannica_data/               # Raw scraped data
+│   │   ├── progress.pkl
+│   │   ├── scraper.log  
+│   │   └── volume_[01-28]/
+│   │       └── part_[XX]/
+│   │           └── [article_title].json
+│   │
+│   ├── britannica_txt/                # Converted text data 
+│   │   └── volume_[01-28]/
+│   │       └── part_[XX]/
+│   │           └── [article_title].txt
+│   │
+│   ├── combined_encyclopedia.txt      # Combined articles
+│   ├── encyclopedia_cleaned.txt       # Cleaned articles
+│   │
+│   └── corpus_split/                  # Training splits
+│       ├── train.txt
+│       └── val.txt
+│
+└── models/
+   ├── tokenizer-clean.json          # Base tokenizer
+   ├── Llama-360M/                   # Teacher model 1 
+   ├── GPTJ-705M/                    # Teacher model 2
+   └── Baby-Llama-58M/               # Distilled model
+       ├── pytorch_model.bin
+       ├── tokenizer.json
+       └── tokenizer_config.json
+```
 
 
 ## Dataset 
 
-(The better the data the better the model)
-Between 100M and 10M words. It's better to start with 10M words.
-
-Main:
-- British Encyclopedia ([wiki](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica))
-- British National Corpus
-(Both of the above don't contain information about the 21st century)
+British Encyclopedia ([wiki](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica))
 
 ## Resources
 
