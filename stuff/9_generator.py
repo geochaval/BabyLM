@@ -1,0 +1,65 @@
+from transformers import LlamaForCausalLM, GPT2TokenizerFast, LlamaConfig
+import torch
+from safetensors.torch import load_file
+
+def generate_text(prompt, model_path="models/model.safetensors", tokenizer_path="models/tokenizer-clean.json", max_length=100, temperature=0.7):
+    # Load the tokenizer
+    tokenizer = GPT2TokenizerFast(tokenizer_file=tokenizer_path)
+    
+    # Set special tokens
+    tokenizer.bos_token = "<s>"
+    tokenizer.eos_token = "</s>"
+    tokenizer.pad_token = "<pad>"
+    
+    # Create config (same as in your training script)
+    config = LlamaConfig(
+        vocab_size=tokenizer.vocab_size,
+        hidden_size=512,
+        num_hidden_layers=16,
+        intermediate_size=1024,
+        num_attention_heads=8,
+        bos_token_id=tokenizer.convert_tokens_to_ids("<s>"),
+        eos_token_id=tokenizer.convert_tokens_to_ids("</s>"),
+        pad_token_id=tokenizer.convert_tokens_to_ids("<pad>"),
+        max_position_embeddings=256,  # 2*SEQ_LENGTH from your training
+    )
+    
+    # Initialize model with config
+    model = LlamaForCausalLM(config)
+    
+    # Load the safetensors weights
+    state_dict = load_file(model_path)
+    model.load_state_dict(state_dict)
+    
+    # Move model to GPU if available
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model = model.to(device)
+    model.eval()
+    
+    # Tokenize the prompt
+    inputs = tokenizer(prompt, return_tensors="pt")
+    input_ids = inputs.input_ids.to(device)
+    
+    # Generate
+    with torch.no_grad():
+        outputs = model.generate(
+            input_ids,
+            max_length=max_length,
+            temperature=temperature,
+            do_sample=True,
+            top_p=0.95,
+            num_return_sequences=1,
+            pad_token_id=tokenizer.pad_token_id,
+            eos_token_id=tokenizer.eos_token_id,
+        )
+    
+    # Decode and return the generated text
+    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    return generated_text
+
+# Example usage
+if __name__ == "__main__":
+    prompt = "<s> London was"
+    generated = generate_text(prompt)
+    print(f"Prompt: {prompt}")
+    print(f"Generated text: {generated}")
