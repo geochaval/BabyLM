@@ -4,7 +4,7 @@ import torch
 
 def generate_text(
     prompt,
-    model_path="models/model.safetensors",
+    model_path="models/Baby-Llama-58M-2/checkpoint-20694",
     tokenizer_path="models/tokenizer-clean.json",
     max_length=100
 ):
@@ -13,7 +13,8 @@ def generate_text(
     tokenizer.bos_token = "<s>"
     tokenizer.eos_token = "</s>"
     tokenizer.pad_token = "<pad>"
-    
+    print("Tokenizer loaded")
+
     # Create model with exact same config as training
     config = LlamaConfig(
         vocab_size=tokenizer.vocab_size,
@@ -25,18 +26,16 @@ def generate_text(
     )
     
     # Initialize model
-    model = LlamaForCausalLM(config)
-    
-    # Load weights carefully
-    with safe_open(model_path, framework="pt", device="cpu") as f:
-        for key in f.keys():
-            model.state_dict()[key].copy_(f.get_tensor(key))
-    
+    #model = LlamaForCausalLM(config)
+    model = LlamaForCausalLM.from_pretrained(model_path)
+    print("Model loaded")
+
     # Set device
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = model.to(device)
     model.eval()
-    
+    print(device)
+
     # Generate
     inputs = tokenizer(prompt, return_tensors="pt").to(device)
     outputs = model.generate(
