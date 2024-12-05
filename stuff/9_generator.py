@@ -4,7 +4,7 @@ import torch
 
 def generate_text(
     prompt,
-    model_path="models/Baby-Llama-58M-2/checkpoint-20694",
+    model_path="models/Baby-Llama",
     tokenizer_path="models/tokenizer-clean.json",
     max_length=100
 ):
