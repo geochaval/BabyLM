@@ -1,4 +1,13 @@
-# BabyLM
+# Small Models, Big Impact: The BabyLM Challenge
+
+## Introduction
+
+This project focuses on training language models using high-quality data instead of large amounts of data. We use the Encyclopedia Britannica as our main source, a reliable and well-organized corpus, to achieve two goals:
+
+1. Competing in the BabyLM Challenge, which limits the dataset to 10 million words.
+2. Building a model that can generate encyclopedic text using the full 38-million-word dataset.
+
+We use knowledge distillation, a technique where smaller student models learn from larger teacher models. This allows us to create smaller, faster models that still perform well. Based on the BabyLlama architecture, our work shows that combining high-quality data with efficient training methods can produce excellent results, even for specific tasks or when resources are limited.
 
 ## Files
 
@@ -10,11 +19,22 @@
 - [`6_tokenizer.py`](6_tokenizer.py): trains a tokenizer using the `corpus_split/train.txt`. It applies Byte Pair Encoding (BPE) with special tokens (`<pad>`, `<s>`, `</s>`) and saves the tokenizer model in the models directory as `tokenizer-clean.json`.
 - [`7_train_teachers.py`](7_train_teachers.py): trains a teacher model using the tokenizer from the previous script. It applies knowledge distillation, using a configuration specified in a YAML file to guide the training process.
 - [`8_train_student.py`](8_train_student.py): performs knowledge distillation from the two large models to a smaller model.
+- [`9_generator.py`](9_generator.py): uses the student model to generate encyclopedia-style text based on a given prompt (e.g., `"<s> London was"`).
 
 
 ## Dataset 
 
-British Encyclopedia ([WikiSource](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica))
+We provide a downloadable dataset on Hugging Face:
 
-You can download it from ([HuggingFace](https://huggingface.co/datasets/EdoVaira/Encyclopedia-Britannica)).
+- ([Encyclopedia Britannica Dataset](https://huggingface.co/datasets/EdoVaira/Encyclopedia-Britannica)): This includes the combined text corpus prepared through our scripts.
 
+The dataset is sourced from the Encyclopedia Britannica available on ([WikiSource](https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica)).
+
+## Get the Paper and Presentation
+
+For a detailed explanation of our work, methodology, and results, you can access:
+
+- Our paper, which outlines the entire process and findings.
+- Our presentation slides, summarizing the project’s highlights.
+
+**TODO**: Put links here.
