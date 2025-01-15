@@ -34,7 +34,5 @@ The dataset is sourced from the Encyclopedia Britannica available on ([WikiSourc
 
 For a detailed explanation of our work, methodology, and results, you can access:
 
-- Our paper, which outlines the entire process and findings.
-- Our presentation slides, summarizing the project’s highlights.
-
-**TODO**: Put links here.
+- Our [`paper`](paper.pdf), which outlines the entire process and findings.
+- Our [`presentation`](presentation.pdf) slides, summarizing the project’s highlights.
